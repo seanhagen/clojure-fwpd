@@ -12,6 +12,9 @@
 (def headers->keywords {"Name" :name
                         "Glitter Index" :glitter-index})
 
+(def keywords->headers {:name "Name"
+                        :glitter-index "Glitter Index"})
+
 (defn str->int
   [str]
   (Integer. str))
@@ -92,3 +95,11 @@
   [new records]
   (when (validate validators new)
     (conj records new)))
+
+(defn unmapify
+  "Turn a seq of maps into a CSV string"
+  [records]
+  (str
+   (s/join "," (vals keywords->headers))
+   "\n"
+   (s/join "\n" (map #(s/join "," (vals %)) records))))
